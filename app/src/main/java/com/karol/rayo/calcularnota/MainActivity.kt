@@ -2,6 +2,7 @@ package com.karol.rayo.calcularnota
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -37,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         guardar = findViewById(R.id.guardar)
         progreso = findViewById(R.id.progreso)
         siguienteEstudiante = findViewById(R.id.siguienteestudiante)
+        vistaPromedio = findViewById(R.id.vistaPromedio)
+        vistaNotaFinal = findViewById(R.id.vistaNotaFinal)
 
         siguienteEstudiante.setOnClickListener{
             nuevoEstudiante()
@@ -46,6 +49,7 @@ class MainActivity : AppCompatActivity() {
             vistaNotaFinal.text = "nota final :" + estudianteActual.notaFinal()
             vistaPromedio.text = "promedio :" + estudianteActual.calcularPromedio()
             siguienteEstudiante.isEnabled = true
+            siguienteEstudiante.visibility = View.VISIBLE
         }
 
 
@@ -64,11 +68,8 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-
-
-            if (validarNota(nota.toDouble()) && validarPorcentaje(porcentaje.toInt()) && validarNombre(
-                    nombre
-                )
+            if (validarNota(nota.toDouble()) && validarPorcentaje(porcentaje.toInt()) &&
+                validarNombre(nombre)
             ) {
                 listaNotas.add(nota.toDouble())
                 listaPorcentaje.add(porcentaje.toInt())
@@ -120,6 +121,8 @@ class MainActivity : AppCompatActivity() {
         ingresarPorcentaje.text.clear()
         vistaPromedio.text = ""
         vistaNotaFinal.text = ""
+        listaNotas.clear()
+        listaPorcentaje.clear()
 
         ingresarNombre.isEnabled = true
 
@@ -131,17 +134,17 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+    fun validarPorcentaje(porcentaje: Int): Boolean {
+        return porcentajeAcumulado + porcentaje <= 100
+
+    }
+
+    fun validarNombre(nombre: String): Boolean {
+        return !nombre.matches(Regex(".\\d."))
+    }
+
 }
 
-fun validarPorcentaje(porcentaje: Int): Boolean {
-    val porcentajeAcumulado
-    return porcentajeAcumulado + porcentaje <= 100
-
-}
-
-fun validarNombre(nombre: String): Boolean {
-    return !nombre.matches(Regex(".\\d."))
-}
 
 
 
